@@ -8,16 +8,21 @@
  */
 
 #include <iostream>
+#include <map>
 
-#include "power.h"
-#include "rgba.h"
-#include "stack.h"
+#include "person.h"
+#include "fruit.h"
 
 // ---------------------------------------------------------------------------
 // вспомогательный макрос для удаления предупреждения об неиспользуемой
 // переменной
 #undef UNUSED
 #define UNUSED(X) (void)(X);
+
+// ---------------------------------------------------------------------------
+// вспомогательный макрос для обозначения передачи аргумента по ссылке
+#undef OUT
+#define OUT
 
 using namespace std;
 
@@ -27,61 +32,50 @@ int main(int argc, const char ** argv) {
   UNUSED(argv)
 
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 1: Создать класс Power, который содержит два вещественных числа. Этот класс
-  // должен иметь две переменные-члена для хранения этих вещественных чисел. Еще создать
-  // два метода: один с именем set, который позволит присваивать значения переменным,
-  // второй - calculate, который будет выводить результат возведения первого числа в
-  // степень второго. Задать значения этих двух чисел по умолчанию.
+  // ЗАДАНИЕ 1: Создать класс Person (человек) с полями: имя, возраст, пол и вес.
+  // Определить методы переназначения имени, изменения возраста и веса. Создать
+  // производный класс Student (студент), имеющий поле года обучения. Определить методы
+  // переназначения и увеличения этого значения. Создать счетчик количества созданных
+  // студентов. В функции main() создать несколько студентов. По запросу вывести
+  // определенного человека.
   {
     cout << " --- TASK 1 --- " << endl;
-    Power power;
-    power.set(2., 2.);
-    cout << "The result of power: " << power.calculate() << endl;
+    namespace n = task_1;
+    const map<string, n::Student> students {
+      {string{"John Smith"}, {string{"John Smith"}, 21, n::Sex::Male, 77, 1667}},
+      {string{"Ivan Ivanov"}, {string{"Ivan Ivanov"}, 18, n::Sex::Male, 65, 2000}},
+      {string{"Olga Buzova"}, {string{"Olga Buzova"}, 25, n::Sex::Female, 50, 2010}}
+    };
+    string request;
+    cout << "Please enter a student's name (total number " << n::Student::count() << "): ";
+    getline(OUT cin, OUT request);
+    auto find_it = students.find(request);
+    if (find_it != students.cend()) {
+      const auto &info = find_it->second;
+      cout << "Found the following information: age = " << info.getAge()
+           << ", sex = " << (n::Sex::Male == info.getSex() ? string{"Male"} : string{"Female"})
+           << ", weight = " << info.getWeight()
+           << ", studyYear = " << info.getStudyYear()
+           << endl;
+    }
+    else {
+      cout << "There's no student with current request!" << endl;
+    }
   }
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 2: Написать класс с именем RGBA, который содержит 4 переменные-члена типа
-  // std::uint8_t: m_red, m_green, m_blue и m_alpha (#include <cstdint> для доступа к
-  // этому типу). Задать 0 в качестве значения по умолчанию для m_red, m_green, m_blue и
-  // 255 для m_alpha. Создать конструктор со списком инициализации членов, который
-  // позволит пользователю передавать значения для m_red, m_blue, m_green и m_alpha.
-  // Написать функцию print(), которая будет выводить значения переменных-членов.
+  // ЗАДАНИЕ 2: Создать классы Apple (яблоко) и Banana (банан), которые наследуют класс
+  // Fruit (фрукт). У Fruit есть две переменные-члена: name (имя) и color (цвет). Добавить
+  // новый класс GrannySmith, который наследует класс Apple.
   {
     cout << endl << " --- TASK 2 --- " << endl;
-    RGBA rgba{0, 127, 255};
-    auto x = rgba.print();
-    cout << "RGBA output: " << rgba.print().c_str() << endl;
+    namespace n = task_2;
+    n::Apple a{std::string{"red"}};
+    n::Banana b{};
+    n::GrannySmith c{};
+
+    cout << "My " << a.getName() << " is " << a.getColor() << "." << endl;
+    cout << "My " << b.getName() << " is " << b.getColor() << "." << endl;
+    cout << "My " << c.getName() << " is " << c.getColor() << "." << endl;
   }
-  // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 3: Написать класс, который реализует функциональность стека. Класс Stack
-  // должен иметь:
-  // - private-массив целых чисел длиной 10;
-  // - private целочисленное значение для отслеживания длины стека;
-  // - public-метод с именем reset(), который будет сбрасывать длину и все значения
-  // элементов на 0;
-  // - public-метод с именем push(), который будет добавлять значение в стек. push()
-  // должен возвращать значение false, если массив уже заполнен, и true в противном случае;
-  // - public-метод с именем pop() для вытягивания и возврата значения из стека. Если в
-  // стеке нет значений, то должно выводиться предупреждение;
-  // public-метод с именем print(), который будет выводить все значения стека.
-  {
-    cout << endl << " --- TASK 3 --- " << endl;
-    Stack stack;
-    stack.reset();
-    stack.print();
-
-    stack.push(3);
-    stack.push(7);
-    stack.push(5);
-
-    stack.print();
-
-    stack.pop();
-    stack.print();
-
-    stack.pop();
-    stack.pop();
-    stack.print();
-  }
-
   return 0;
 }
