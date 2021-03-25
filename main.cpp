@@ -8,10 +8,13 @@
  */
 
 #include <iostream>
-#include <map>
+#include <memory>
 
-#include "person.h"
-#include "fruit.h"
+#include "task_1.h"
+#include "task_2.h"
+#include "task_3.h"
+
+#include "card.h"
 
 // ---------------------------------------------------------------------------
 // вспомогательный макрос для удаления предупреждения об неиспользуемой
@@ -32,50 +35,72 @@ int main(int argc, const char ** argv) {
   UNUSED(argv)
 
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 1: Создать класс Person (человек) с полями: имя, возраст, пол и вес.
-  // Определить методы переназначения имени, изменения возраста и веса. Создать
-  // производный класс Student (студент), имеющий поле года обучения. Определить методы
-  // переназначения и увеличения этого значения. Создать счетчик количества созданных
-  // студентов. В функции main() создать несколько студентов. По запросу вывести
-  // определенного человека.
+  // ЗАДАНИЕ 1: Создать абстрактный класс Figure (фигура). Его наследниками являются
+  // классы Parallelogram (параллелограмм) и Circle (круг). Класс Parallelogram — базовый
+  // для классов Rectangle (прямоугольник), Square (квадрат), Rhombus (ромб). Для всех
+  // классов создать конструкторы. Для класса Figure добавить чисто виртуальную функцию
+  // area() (площадь). Во всех остальных классах переопределить эту функцию, исходя из
+  // геометрических формул нахождения площади.
   {
     cout << " --- TASK 1 --- " << endl;
     namespace n = task_1;
-    const map<string, n::Student> students {
-      {string{"John Smith"}, {string{"John Smith"}, 21, n::Sex::Male, 77, 1667}},
-      {string{"Ivan Ivanov"}, {string{"Ivan Ivanov"}, 18, n::Sex::Male, 65, 2000}},
-      {string{"Olga Buzova"}, {string{"Olga Buzova"}, 25, n::Sex::Female, 50, 2010}}
-    };
-    string request;
-    cout << "Please enter a student's name (total number " << n::Student::count() << "): ";
-    getline(OUT cin, OUT request);
-    auto find_it = students.find(request);
-    if (find_it != students.cend()) {
-      const auto &info = find_it->second;
-      cout << "Found the following information: age = " << info.getAge()
-           << ", sex = " << (n::Sex::Male == info.getSex() ? string{"Male"} : string{"Female"})
-           << ", weight = " << info.getWeight()
-           << ", studyYear = " << info.getStudyYear()
-           << endl;
-    }
-    else {
-      cout << "There's no student with current request!" << endl;
-    }
+    std::unique_ptr<n::Figure> figure_1 {new n::Circle{4}};
+    std::unique_ptr<n::Rectangle> figure_2 {new n::Rectangle{2.5, 4}};
+    std::unique_ptr<n::Square> figure_3 {new n::Square{4}};
+    std::unique_ptr<n::Rhombus> figure_4 {new n::Rhombus{2.5, 4}};
+
+    cout << "Circle area: " << figure_1->area() << endl;
+    cout << "Rectangle area: " << figure_2->area() << endl;
+    cout << "Square area: " << figure_3->area() << endl;
+    cout << "Rhombus area: " << figure_4->area() << endl;
   }
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 2: Создать классы Apple (яблоко) и Banana (банан), которые наследуют класс
-  // Fruit (фрукт). У Fruit есть две переменные-члена: name (имя) и color (цвет). Добавить
-  // новый класс GrannySmith, который наследует класс Apple.
+  // ЗАДАНИЕ 2: Создать класс Car (автомобиль) с полями company (компания) и model
+  // (модель). Классы-наследники: PassengerCar (легковой автомобиль) и Bus (автобус). От
+  // этих классов наследует класс Minivan (минивэн). Создать конструкторы для каждого из
+  // классов, чтобы они выводили данные о классах. Создать объекты для каждого из классов
+  // и посмотреть, в какой последовательности выполняются конструкторы. Обратить внимание
+  // на проблему «алмаз смерти».
   {
     cout << endl << " --- TASK 2 --- " << endl;
     namespace n = task_2;
-    n::Apple a{std::string{"red"}};
-    n::Banana b{};
-    n::GrannySmith c{};
+    cout << "CLASS \"Car\"" << endl;
+    std::unique_ptr<n::Car> ptr {new n::Car{}};
+    ptr.reset();
 
-    cout << "My " << a.getName() << " is " << a.getColor() << "." << endl;
-    cout << "My " << b.getName() << " is " << b.getColor() << "." << endl;
-    cout << "My " << c.getName() << " is " << c.getColor() << "." << endl;
+    cout << endl << "CLASS \"PassengerCar\"" << endl;
+    ptr.reset(new n::PassengerCar{});
+    ptr.reset();
+
+    cout << endl << "CLASS \"Bus\"" << endl;
+    ptr.reset(new n::Bus{});
+    ptr.reset();
+
+    cout << endl << "CLASS \"Minivan\"" << endl;
+    ptr.reset(new n::Minivan{});
   }
+  // ------------------------------------------------------------------------------------
+  // ЗАДАНИЕ 3: Создать класс: Fraction (дробь). Дробь имеет числитель и знаменатель
+  // (например, 3/7 или 9/2). Предусмотреть, чтобы знаменатель не был равен 0.
+  // Перегрузить: математические бинарные операторы (+, -, *, /) для выполнения действий
+  // с дробями; унарный оператор (-); логические операторы сравнения двух дробей (==, !=,
+  // <, >, <=, >=).
+  {
+    cout << endl << " --- TASK 3 --- " << endl;
+    namespace n = task_3;
+    n::Fraction f1{1, 2}, f2{2, 8};
+    cout << "f1 + f2 = " << (f1 + f2).print() << endl;
+    cout << "f1 - f2 = " << (f1 - f2).print() << endl;
+    cout << "f1 * f2 = " << (f1 * f2).print() << endl;
+    cout << "f1 / f2 = " << (f1 / f2).print() << endl;
+    cout << "-f1 = " << (-f1).print() << endl;
+    cout << "(f1 == f2) = " << (f1 == f2) << endl;
+    cout << "(f1 != f2) = " << (f1 != f2) << endl;
+    cout << "(f1 > f2) = " << (f1 > f2) << endl;
+    cout << "(f1 >= f2) = " << (f1 >= f2) << endl;
+    cout << "(f1 < f2) = " << (f1 < f2) << endl;
+    cout << "(f1 <= f2) = " << (f1 <= f2) << endl;
+  }
+
   return 0;
 }
