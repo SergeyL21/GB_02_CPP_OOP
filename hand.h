@@ -25,7 +25,7 @@
 class Card;
 
 class Hand {
-  using PtrCard = std::unique_ptr<Card>;
+  using PtrCard = std::shared_ptr<Card>;
 public:
   Hand();
   virtual ~Hand();
