@@ -8,13 +8,12 @@
  */
 
 #include <iostream>
-#include <memory>
+#include <vector>
+#include <unordered_map>
 
 #include "task_1.h"
 #include "task_2.h"
 #include "task_3.h"
-
-#include "card.h"
 
 // ---------------------------------------------------------------------------
 // вспомогательный макрос для удаления предупреждения об неиспользуемой
@@ -35,72 +34,45 @@ int main(int argc, const char ** argv) {
   UNUSED(argv)
 
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 1: Создать абстрактный класс Figure (фигура). Его наследниками являются
-  // классы Parallelogram (параллелограмм) и Circle (круг). Класс Parallelogram — базовый
-  // для классов Rectangle (прямоугольник), Square (квадрат), Rhombus (ромб). Для всех
-  // классов создать конструкторы. Для класса Figure добавить чисто виртуальную функцию
-  // area() (площадь). Во всех остальных классах переопределить эту функцию, исходя из
-  // геометрических формул нахождения площади.
+  // ЗАДАНИЕ 1: Добавить в контейнерный класс, который был написан в этом уроке, методы:
+  // для удаления последнего элемента массива (аналог функции pop_back() в векторах);
+  // для удаления первого элемента массива (аналог pop_front() в векторах);
+  // для сортировки массива;
+  // для вывода на экран элементов.
   {
     cout << " --- TASK 1 --- " << endl;
     namespace n = task_1;
-    std::unique_ptr<n::Figure> figure_1 {new n::Circle{4}};
-    std::unique_ptr<n::Rectangle> figure_2 {new n::Rectangle{2.5, 4}};
-    std::unique_ptr<n::Square> figure_3 {new n::Square{4}};
-    std::unique_ptr<n::Rhombus> figure_4 {new n::Rhombus{2.5, 4}};
-
-    cout << "Circle area: " << figure_1->area() << endl;
-    cout << "Rectangle area: " << figure_2->area() << endl;
-    cout << "Square area: " << figure_3->area() << endl;
-    cout << "Rhombus area: " << figure_4->area() << endl;
+    const std::string separator{", "};
+    n::MyArray<int> arr {3, -7, 2, 8, 12, 11, 15, 1, -4};
+    cout << "Origin array: " << arr.toString(separator) << endl;
+    arr.popBack();
+    cout << "Array popBack(): " << arr.toString(separator) << endl;
+    arr.popFront();
+    cout << "Array popFront(): " << arr.toString(separator) << endl;
+    arr.sort();
+    cout << "Array sort(): " << arr.toString(separator) << endl;
   }
   // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 2: Создать класс Car (автомобиль) с полями company (компания) и model
-  // (модель). Классы-наследники: PassengerCar (легковой автомобиль) и Bus (автобус). От
-  // этих классов наследует класс Minivan (минивэн). Создать конструкторы для каждого из
-  // классов, чтобы они выводили данные о классах. Создать объекты для каждого из классов
-  // и посмотреть, в какой последовательности выполняются конструкторы. Обратить внимание
-  // на проблему «алмаз смерти».
+  // ЗАДАНИЕ 2: Дан вектор чисел, требуется выяснить, сколько среди них различных.
+  // Постараться использовать максимально быстрый алгоритм.
   {
     cout << endl << " --- TASK 2 --- " << endl;
-    namespace n = task_2;
-    cout << "CLASS \"Car\"" << endl;
-    std::unique_ptr<n::Car> ptr {new n::Car{}};
-    ptr.reset();
-
-    cout << endl << "CLASS \"PassengerCar\"" << endl;
-    ptr.reset(new n::PassengerCar{});
-    ptr.reset();
-
-    cout << endl << "CLASS \"Bus\"" << endl;
-    ptr.reset(new n::Bus{});
-    ptr.reset();
-
-    cout << endl << "CLASS \"Minivan\"" << endl;
-    ptr.reset(new n::Minivan{});
+    namespace n = task_1;
+    n::MyArray<int> arr {1, 3, 7, 8, 1, 2, 3, 3, 9, 7};
+    int result{0};
+    // используем для подсчета кол-ва именно различных чисел ассоциативный контейнер
+    // (да, "ленивый вариант", возможно не самый быстрый, зато пишется в течении пары
+    // минут :)
+    unordered_map<int, int> map;
+    for (std::size_t n{0u}; n < arr.getLength(); ++n) {
+      auto &element = map[arr[n]];
+      ++element;
+      if (element == 1) {
+        ++result;
+      }
+    }
+    cout << "Array: " << arr.toString(std::string{", "}) << endl;
+    cout << "Count of non-repeating array elements : " << result << endl;
   }
-  // ------------------------------------------------------------------------------------
-  // ЗАДАНИЕ 3: Создать класс: Fraction (дробь). Дробь имеет числитель и знаменатель
-  // (например, 3/7 или 9/2). Предусмотреть, чтобы знаменатель не был равен 0.
-  // Перегрузить: математические бинарные операторы (+, -, *, /) для выполнения действий
-  // с дробями; унарный оператор (-); логические операторы сравнения двух дробей (==, !=,
-  // <, >, <=, >=).
-  {
-    cout << endl << " --- TASK 3 --- " << endl;
-    namespace n = task_3;
-    n::Fraction f1{1, 2}, f2{2, 8};
-    cout << "f1 + f2 = " << (f1 + f2).print() << endl;
-    cout << "f1 - f2 = " << (f1 - f2).print() << endl;
-    cout << "f1 * f2 = " << (f1 * f2).print() << endl;
-    cout << "f1 / f2 = " << (f1 / f2).print() << endl;
-    cout << "-f1 = " << (-f1).print() << endl;
-    cout << "(f1 == f2) = " << (f1 == f2) << endl;
-    cout << "(f1 != f2) = " << (f1 != f2) << endl;
-    cout << "(f1 > f2) = " << (f1 > f2) << endl;
-    cout << "(f1 >= f2) = " << (f1 >= f2) << endl;
-    cout << "(f1 < f2) = " << (f1 < f2) << endl;
-    cout << "(f1 <= f2) = " << (f1 <= f2) << endl;
-  }
-
   return 0;
 }
