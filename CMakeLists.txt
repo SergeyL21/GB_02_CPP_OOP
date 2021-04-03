@@ -18,3 +18,5 @@ set(OTHER_FILES
   task_6_1.impl
   task_6_2.impl
 )
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${OTHER_FILES})
