@@ -7,14 +7,14 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
   main.cpp
+  card.cpp
   hand.cpp
   generic_player.cpp
+  player.cpp
+  house.cpp
 )
 
 set(OTHER_FILES
-  task_5_1.impl
-  task_5_2.impl
-  task_5_3.impl
+  task_6_1.impl
+  task_6_2.impl
 )
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${OTHER_FILES})
