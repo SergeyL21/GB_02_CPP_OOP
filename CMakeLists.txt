@@ -8,6 +8,13 @@ set(CMAKE_CXX_STANDARD 14)
 set(SOURCE_FILES
   main.cpp
   hand.cpp
+  generic_player.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+set(OTHER_FILES
+  task_5_1.impl
+  task_5_2.impl
+  task_5_3.impl
+)
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${OTHER_FILES})
