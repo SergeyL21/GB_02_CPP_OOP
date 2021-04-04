@@ -9,6 +9,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 #define GETTER(Type, Name, Operand) \
   public: \
