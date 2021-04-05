@@ -12,23 +12,23 @@ using namespace std;
 
 // --------------------------------------------------------------------------------------
 bool Player::isHitting() const {
-  cout << m_name << ", do you want a hit? (Y/N): ";
-  char input;
-  cin >> input;
-  return (input == 'y' || input == 'Y');
+  wcout << m_name << L", do you want a hit? (Y/N): ";
+  wchar_t input;
+  wcin >> input;
+  return (input == L'y' || input == L'Y');
 }
 
 // --------------------------------------------------------------------------------------
 void Player::win() const {
-  cout << m_name << " wins." << endl;
+  wcout << m_name << L" wins.";
 }
 
 // --------------------------------------------------------------------------------------
 void Player::lose() const {
-  cout << m_name << " loses." << endl;
+  wcout << m_name << L" loses.";
 }
 
 // --------------------------------------------------------------------------------------
 void Player::push() const {
-  cout << m_name << " pushes." << endl;
+  wcout << m_name << L" pushes.";
 }

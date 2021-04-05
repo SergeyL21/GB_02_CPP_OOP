@@ -23,12 +23,12 @@ bool GenericPlayer::isBusted() const {
 
 // --------------------------------------------------------------------------------------
 void GenericPlayer::bust() const {
-  cout << m_name << " busts." << endl;
+  wcout << m_name << L" busts." << endl;
 }
 
 // --------------------------------------------------------------------------------------
 wostream &operator<<(wostream &s, const GenericPlayer &p) {
-  s << wstring{p.m_name.cbegin(), p.m_name.cend()} << L": ";
+  s << p.m_name << L": ";
 
   if (!p.m_cards.empty()) {
     for (auto it = p.m_cards.cbegin(); it != p.m_cards.cend(); ++it) {
@@ -37,7 +37,7 @@ wostream &operator<<(wostream &s, const GenericPlayer &p) {
     s << L"= [" << p.getValue() << L"]" << endl;
   }
   else {
-    s << L"<EMPTY>";
+    s << L"<EMPTY>" << endl;
   }
   return s;
 }

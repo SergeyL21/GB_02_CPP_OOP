@@ -44,7 +44,7 @@ enum class CardValue {
 // --------------------------------------------------------------------------------------
 class Card {
 public:
-  Card(CardSuit suit, CardValue value, bool isFaceUp = false) :
+  Card(CardSuit suit, CardValue value, bool isFaceUp = true) :
     m_suit(suit), m_value(value), m_isFaceUp(isFaceUp) {}
   ~Card() = default;
 
@@ -52,6 +52,10 @@ public:
 
   // возращаем кол-во очков, которые можно получить за карту
   inline int getValue() const {
+    // если скрыта, возвращаем ноль
+    if (!m_isFaceUp) {
+      return 0;
+    }
     // валет, дама и король дают по 10 очков
     return static_cast<int>(m_value) > 10 ? 10 : static_cast<int>(m_value);
   }
@@ -65,5 +69,5 @@ public:
 private:
   CardSuit m_suit {CardSuit::Undefined};
   CardValue m_value {CardValue::Undefined};
-  bool m_isFaceUp {false};
+  bool m_isFaceUp {true};
 };
