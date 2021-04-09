@@ -12,11 +12,8 @@ set(SOURCE_FILES
   generic_player.cpp
   player.cpp
   house.cpp
-)
-
-set(OTHER_FILES
-  task_6_1.impl
-  task_6_2.impl
+  deck.cpp
+  game.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${OTHER_FILES})

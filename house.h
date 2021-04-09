@@ -13,7 +13,7 @@
 // --------------------------------------------------------------------------------------
 class House : public GenericPlayer {
 public:
-  inline House() : GenericPlayer(std::string{"House"}) {}
+  inline House() : GenericPlayer(std::wstring{L"House"}) {}
   inline virtual ~House() override {}
 
   virtual bool isHitting() const override;

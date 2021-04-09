@@ -13,7 +13,7 @@
 // --------------------------------------------------------------------------------------
 class Player : public GenericPlayer {
 public:
-  inline Player(const std::string& name) : GenericPlayer(name) {}
+  inline Player(const std::wstring& name) : GenericPlayer(name) {}
   inline virtual ~Player() override {}
 
   virtual bool isHitting() const override;

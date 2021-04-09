@@ -13,7 +13,7 @@
 // --------------------------------------------------------------------------------------
 class GenericPlayer : public Hand {
 public:
-  inline GenericPlayer(const std::string &name) :
+  inline GenericPlayer(const std::wstring &name) :
     Hand(), m_name(name) {}
   inline virtual ~GenericPlayer() override {}
 
@@ -25,5 +25,5 @@ public:
   void bust() const;
 
 protected:
-  std::string m_name;
+  std::wstring m_name;
 };
